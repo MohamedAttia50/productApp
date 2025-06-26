@@ -1,0 +1,46 @@
+<section>
+    <div class="container">
+        <h2>Cart</h2>
+        <div class="row pt-3 w-75 m-auto">
+            <div class="col-md-6">
+                <p>Description</p>
+            </div>
+            <div class="col-md-6 d-flex justify-content-between">
+                <p>Quantity</p>
+                <p>Remove</p>
+                <p>Price</p>
+            </div>
+            <hr>
+            @for (product of cartItems(); track product.id) {
+                <div class="col-md-6 d-flex p-0 ">
+                <figure>
+                    <img [src]="product.images[0]" alt="">
+                </figure>
+                <div class="align-self-center">
+                    <h6>{{product.title}}</h6>
+                    <p></p>
+                </div>
+            </div>
+            <div class="col-md-6 d-flex justify-content-between  align-items-center">
+                <div class=" text-white  d-flex  ">
+                        <i class="fa-solid fa-plus  text-white bg-success align-self-center p-2" (click)="increment(product.id)"></i>
+                        <span class="px-3 text-black border">{{product.quantity}}</span>
+                        <i class="fa-solid fa-minus  text-black bg-dark-subtle align-self-center p-2" (click)="decrement(product.id)"></i>
+                </div>
+                <div class="">
+                    <i class="fa-solid fa-xmark p-2 bg-body-secondary " (click)="remove(product.id)"></i>
+                </div>
+                <div class="">
+                    <p class="fw-bold">{{product.price * product.quantity | currency:'USD'}}</p>
+                </div>
+            </div>
+            <hr>
+            }
+
+            <div class="w-100 text-center">
+                <p class="bg-info">TOTAL : {{totalPrice() | currency:'USD'}}</p>
+            </div>
+            
+        </div>
+    </div>
+</section>

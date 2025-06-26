@@ -1,0 +1,41 @@
+figure{
+    background-color: #f0f0f0;
+    border-radius: 8px;
+}
+button{
+    background-color: transparent;
+    color: black;
+    border-radius: 18px;
+    padding: 5px 15px;
+}
+.add-btn:hover{
+    background-color: rgb(11, 11, 21);
+    color: white;
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    border: none;
+}
+.item {
+margin-top: auto;
+}
+span{
+    position: absolute;
+    background-color: green;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 18px;
+    margin: 5px 0 0 5px;
+    font-size: 12px;
+}
+p{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+i{
+    display: inline-block !important;
+}

@@ -1,0 +1,60 @@
+<section *ngIf="product()" class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <figure>
+                    <img [src]="product().images[0]" [alt]="product().title">
+                </figure>
+                <figure class="d-flex w-25 gap-2">
+                    @for (img of product().images; let i=$index; track $index) {
+                        <img [src]="product().images[i]" [alt]="product().title">
+                    }
+                </figure>
+            </div>
+            <div class="col-md-6">
+                <div>
+                    <h2>{{product().title}}</h2>
+                    <p>{{product().description}}</p>
+                    @for(star of getStarIcons(product().rating) ;track $index){
+                    <ng-container [ngSwitch]="star">
+                        <i *ngSwitchCase="'full'" class="fa-solid fa-star text-warning"></i>
+                        <i *ngSwitchCase="'half'" class="fa-solid fa-star-half-stroke text-warning"></i>
+                        <i *ngSwitchCase="'empty'" class="fa-regular fa-star text-warning"></i>
+                    </ng-container>
+                    }
+                    <span> ({{product().rating}})</span>
+                </div>
+                <hr>
+                <div>
+                    <h3>{{product().price | currency:'USD'}}</h3>
+                    <p>Suggested payments with 6 months special financing</p>
+                </div>
+                <hr>
+                <div class="d-flex flex-column">
+                    <p class="bg-success rounded-5 text-white px-2">{{product().availabilityStatus}}</p>
+                    <p class="bg-info rounded-5 px-2">Brand: {{product().brand}}</p>
+                    <p class="rounded-5 bg-warning px-2">Category: {{product().category}}</p>
+                </div>
+                <hr>
+                <div>
+                    <div class="d-flex">
+                        <div class=" text-white rounded-5 me-3 d-flex align-items-center counter p-2 align-self-center">
+                            <i class="fa-solid fa-minus fa-xl text-black " (click)="decrementProduct()"></i>
+                            <span class="px-4 text-black">{{counter()}}</span>
+                            <i class="fa-solid fa-plus fa-xl text-black" (click)="incrementProduct()"></i>
+                        </div>
+                        <p>Only <span class="text-warning ">{{product().stock}} item</span> left! <br> Don't miss it</p>
+                    </div>
+                    <div class="py-3 d-flex">
+                        <button class=" w-50 btn btn-info rounded-3 me-2 rounded-5">Buy Now</button>
+                        <button *ngIf="!isInCart(product().id)" class="w-50  btn btn-outline-info rounded-5"
+                            (click)="addToCart(product())">Add to cart</button>
+                        <button *ngIf="isInCart(product().id)" class="w-50 btn btn-outline-danger rounded-5"
+                            (click)="removeFromCart(product().id)">Remove from cart</button>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

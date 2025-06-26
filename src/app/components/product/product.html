@@ -1,0 +1,35 @@
+    <section>
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                @for (product of productsArr() ; track product.id) {
+                <div class="col-md-4 col-sm-6  col-lg-3 py-3 card position-relative">
+                    <span [style.background-color]="product.availabilityStatus==='In Stock'?'green':'pink'">{{product.availabilityStatus}}</span>
+                    <figure  (click)="goToDetails(product.id)">
+                        <img [src]="product.images[0]" alt="">
+                    </figure>
+                    <div class="d-flex justify-content-between">
+                    <h5>{{product.title}}</h5>
+                    <small class="fw-bold">{{product.price | currency:'USD' }}</small>
+                    </div>
+                    <p>{{product.description}}</p> 
+                    <div class="pb-3 item">
+                        @for(star of getStarIcons(product.rating);track $index){
+                            <ng-container [ngSwitch]="star" class="d-flex gap-1">
+                                <i *ngSwitchCase="'full'" class="fa-solid fa-star text-success"></i>
+                                <i *ngSwitchCase="'half'" class="fa-solid fa-star-half-stroke text-success"></i>
+                                <i *ngSwitchCase="'empty'" class="fa-regular fa-star text-success"></i>
+                            </ng-container>
+                        }
+                    </div>
+                    <button *ngIf="!isInCart(product.id)" class="align-self-start item add-btn" (click)="addToCart(product,$event)" >Add to cart</button>
+                    <button *ngIf="isInCart(product.id)" class=" align-self-start btn btn-outline-danger item" (click)="removeFromCart(product.id,$event)">Remove from cart</button>
+                </div>
+            }
+            </div>
+
+            <div>
+                
+            </div>
+        </div>
+    </section>
+    

@@ -1,0 +1,13 @@
+<header class="pt-3">
+    <div class="container">
+        <nav class="d-flex justify-content-between">
+        <h2> <a [routerLink]="'/'">Products App</a></h2>
+        <div class="position-relative">
+            <button class="btn btn-outline-warning ">Register</button>
+            <button class="btn btn-outline-success ms-2" >Login</button>
+            <i class="fa-solid fa-cart-shopping fa-xl ms-2" (click)="goToCart()"></i>
+            <small class="position-absolute bg-success rounded-circle ">{{cartCount}}</small>
+        </div>
+    </nav>
+    </div>
+</header>
