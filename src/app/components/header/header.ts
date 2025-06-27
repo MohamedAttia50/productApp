@@ -15,11 +15,19 @@ private cartService=inject(CartService)
 private router=inject(Router);
 
 
-get cartCount():number{  
-  return this.cartService.cartCount();
+get cartCount():number{
+return this.cartService.cartCount()
 }
 
 goToCart(){
   this.router.navigate(['/cartItem'])
+}
+
+goToLogin(){
+  this.router.navigate(['/login'])
+}
+
+goToRegister(){
+  this.router.navigate(['/register'])
 }
 }

@@ -1,0 +1,33 @@
+<section class="form-container">
+    <h2>Login</h2>
+    <form #loginForm="ngForm" (ngSubmit)="submit(loginForm)">
+
+        <div class="form-field">
+            <label for="email">Email Address</label>
+            <input type="email" required ngModel #email="ngModel" pattern="/^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/"
+                name="email">
+            @if(email.touched && email.errors){
+            @if(email.getError('required')){
+            <small>This field is required</small>
+            }
+            @if(email.getError('pattern')){
+            <small>This field should be email format</small>
+            }
+            }
+        </div>
+        <div class="form-field">
+            <label for="password">Password</label>
+            <input type="password" required ngModel #password="ngModel" pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{4,}$/" name="password">
+            @if(password.touched &&password.errors){
+            @if(password.getError("required")){
+            <small>This field is required</small>
+            }
+            @if(password.getError("pattern")){
+                <small>Password must be contain special character lowercase,uppercase and number </small>
+            }
+
+            }
+        </div>
+        <button [disabled]="!loginForm.valid">Login</button>
+    </form>
+</section>

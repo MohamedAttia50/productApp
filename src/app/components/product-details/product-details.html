@@ -39,9 +39,9 @@
                 <div>
                     <div class="d-flex">
                         <div class=" text-white rounded-5 me-3 d-flex align-items-center counter p-2 align-self-center">
-                            <i class="fa-solid fa-minus fa-xl text-black " (click)="decrementProduct()"></i>
+                            <i class="fa-solid fa-minus fa-xl text-black " (click)="decriment(product().id)"></i>
                             <span class="px-4 text-black">{{counter()}}</span>
-                            <i class="fa-solid fa-plus fa-xl text-black" (click)="incrementProduct()"></i>
+                            <i class="fa-solid fa-plus fa-xl text-black" (click)="incriment(product().id)"></i>
                         </div>
                         <p>Only <span class="text-warning ">{{product().stock}} item</span> left! <br> Don't miss it</p>
                     </div>
@@ -57,4 +57,6 @@
             </div>
         </div>
     </div>
-</section>
+</section> 
+
+

@@ -13,11 +13,10 @@ import { Router } from '@angular/router';
 export class Product {
 private productService=inject(ProductService);
 private cartService=inject(CartService);
+private router=inject(Router);
+
 
 productsArr = signal<any[]>([]);
-addedToCart = signal<boolean>(false);
-
-
 
 constructor(){
   effect(()=>{
@@ -32,15 +31,8 @@ ngOnInit(){
     },
     error:err=> console.error('faild to load products ',err)
   });
-  const savedItem = localStorage.getItem('products');
-  if (savedItem !== null) {
-    JSON.parse(savedItem);
-  }
 }
 
-saveToLocalstorage(){
-  localStorage.setItem('products',JSON.stringify(this.productsArr()))
-}
 
 addToCart(product:any ,e:Event){
   this.cartService.addToCart(product);
@@ -53,14 +45,13 @@ removeFromCart(productId:number,e:Event){
 }
 
 isInCart(productId:number){
- return this.cartService.isIncart(productId);
+ return this.cartService.isInCart(productId);
 }
 
 getCartCount(){
   this.cartService.cartCount();
 }
 
-private router=inject(Router);
 
 goToDetails(id:number){
   this.router.navigate(['/product', id])

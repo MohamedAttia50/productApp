@@ -1,0 +1,118 @@
+<section class="form-container">
+    <h2>Register</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="submit()">
+        <div class="form-field">
+            <label for="name">Name</label>
+            <input type="text" name="name" formControlName="name">
+            @if(registerForm.get('name')?.touched && registerForm.get('name')?.errors ){
+            <small>This field is required</small>
+            }
+        </div>
+
+        <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" name="email" formControlName="email">
+            @if (registerForm.get('email')?.touched && registerForm.get('email')?.errors ) {
+            @if(registerForm.get('email')?.getError('required')){
+            <small>This field is required</small>
+            }
+            @if(registerForm.get('email')?.getError('pattern')){
+            <small>This field must be email format</small>
+            }
+
+            }
+        </div>
+
+        <div class="form-field">
+            <label for="uName">User Name</label>
+            <input type="text" name="uName" formControlName="uName">
+            @if(registerForm.get('uName')?.touched && registerForm.get('uName')?.errors){
+            @if(registerForm.get('uName')?.getError('required')){
+            <small>This field is required</small>
+            }
+            @if(registerForm.get('uName')?.getError('pattern')){
+            <small>User name must be at least 4 character and contain no spaces</small>
+            }
+            }
+        </div>
+
+        <div class="form-field pass-field">
+            <label for="pass"> Password</label>
+            <input [type]="showPassword? 'text':'password'" name="pass" formControlName="pass">
+            <i (click)="toggleShowPass()" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"
+            class="fa-solid fa-eye"></i>
+            @if(registerForm.get('pass')?.touched && registerForm.get('pass')?.errors){
+            @if (registerForm.get('pass')?.getError('required')) {
+            <small>This field is required</small>
+            }
+            @if(registerForm.get('pass')?.getError('pattern')) {
+            <small>password must be 8 character at least and contain numbers, (lower and upper case) and special
+                character </small>
+            }
+            }
+        </div>
+
+        <div class="form-field">
+            <label for="confirmPass"> Confirm Password</label>
+            <input type="password" name="confirmPass" formControlName="confirmPass">
+            @if (registerForm.get('confirmPass')?.touched && registerForm.get('confirmPass')?.errors) {
+            @if (registerForm.get('confirmPass')?.getError('required')) {
+            <small>This field is required</small>
+            }
+            @if (registerForm.get('confirmPass')?.getError('passwordMismatch')) {
+            <small>Passwords do not match</small>
+            }
+            }
+        </div>
+        <div formArrayName="addresses">
+            <h3>Adresses</h3>
+            @for (address of addresses.controls ;track address.value.id; let i=$index) {
+            <div [formGroupName]="i" class="address">
+                <div>
+                    <label for="address">Address</label>
+                    <input type="text" name="address" formControlName="address">
+                    @if (address.get('address')?.touched &&address.get('address')?.errors) {
+                        @if(address.get('address')!.getError('required')){
+                            <small>required</small>
+                        }
+                    }
+                </div>
+                <div>
+                    <label for="street">Street</label>
+                    <input type="text" name="street" formControlName="street">
+                    @if (address.get('street')?.touched &&address.get('street')?.errors) {
+                        @if(address.get('street')!.getError('required')){
+                            <small>required</small>
+                        }
+                    }
+                </div>
+                <div>
+                    <label for="Country">Country</label>
+                    <input type="text" name="Country" formControlName="country">
+                    @if (address.get('country')?.touched &&address.get('country')?.errors) {
+                        @if(address.get('country')!.getError('required')){
+                            <small>required</small>
+                        }
+                    }
+                </div>
+                <div>
+                    <label for="city">City</label>
+                    <input type="text" name="city" formControlName="city">
+                    @if (address.get('city')?.touched &&address.get('city')?.errors) {
+                        @if(address.get('city')!.getError('required')){
+                            <small>required</small>
+                        }
+                    }
+                </div>
+
+                <button type="button" (click)="removeAddress(i)">Remove</button>
+
+            </div>
+            }
+
+
+        </div>
+        <button type="button" (click)="addAddress()">+ Add Another Address</button>
+        <button [disabled]="registerForm.invalid">Register</button>
+    </form>
+</section>

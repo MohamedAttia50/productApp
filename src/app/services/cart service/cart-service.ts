@@ -1,63 +1,32 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
+import { AuthService } from '../auth.service/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 
 export class CartService {
+  private cartList = signal<any[]>([]);
 
-  private cartList = signal<any>([]);
+  cartCount = signal<number>(0)
 
-  getCartlist() {
-    return this.cartList();
-  }
+  private authService=inject(AuthService);
 
-  cartCount = signal<number>(0);
-  counter = signal(0);
-
-  private updateCartList(newCart: any[]){
-  this.cartList.set(newCart);
-  localStorage.setItem('cart',JSON.stringify(newCart));
-  this.cartCount.set(newCart.length)
+  private updateCartList(newCart:any[]):void{
+    this.cartList.set(newCart)
+    this.cartCount.set(newCart.length)
+    localStorage.setItem('cart',JSON.stringify(newCart));
   }
 
   constructor(){
-    const savedCart=localStorage.getItem('cart');
-    if(savedCart){
-      this.cartList.set(JSON.parse(savedCart));
-      this.cartCount.set(this.cartList().length)
-    }
+  const savedCart=localStorage.getItem('cart')
+  if(savedCart){
+    this.updateCartList(JSON.parse(savedCart));
   }
-
-  addToCart(product: any, quantity: number = 1) {
-
-    const existingProduct = this.cartList().find((p: any) => p.id === product.id);
-    let updatedCart;
-
-    if (existingProduct) {
-      updatedCart = this.cartList().map((p: any) => {
-        if (p.id === product.id) {
-          return {
-            ...p,
-            quantity: p.quantity + quantity > p.stock ? p.stock : p.quantity + quantity
-          };
-        }
-        return p;
-      })
-    } else {
-      updatedCart = [...this.cartList(), { ...product, quantity }]
-    }
-
-    this.updateCartList(updatedCart);
   }
 
 
-  removeFromCart(productId: number) {
-    const updatedCart = this.cartList().filter((p: any) => p.id !== productId);
-    this.updateCartList(updatedCart)
-  }
-
-  isIncart(productId: number): boolean {
+  isInCart(productId: number): boolean {
     return this.cartList().some((p: any) => p.id === productId);
   }
 
@@ -70,26 +39,57 @@ export class CartService {
       ...Array(fullStar).fill('full'),
       ...Array(halfStar).fill('half'),
       ...Array(emptyStar).fill('empty')
-    ];
+    ]
   }
 
-  incrementProduct(productId: number){
-   const updatedCart=this.cartList().map((p:any)=>{
-    if(p.id === productId && p.quantity < p.stock){
-      return {...p, quantity:p.quantity +1};
-    }
-    return p;
-   })
-   this.updateCartList(updatedCart)
-  }
+  addToCart(product: any, quantity: number=1) {
+
   
-  decrementProduct(productId: number){
-    const updatedCart=this.cartList().map((p:any)=>{
-      if(p.id ===productId && p.quantity > 1){
-        return {...p, quantity:p.quantity -1};
-      }
-      return p;
-    });
+    const existingProduct = this.cartList().find((p) => p.id === product.id);
+    let updatedCart;
+
+    if(existingProduct){
+      updatedCart=this.cartList().map((p)=>{
+        if(p.id===product.id){
+          return{...p, quantity: p.quantity +quantity > p.stock ? p.stock : p.quantity +quantity};
+        }
+        return p;
+      })
+    }else{
+      updatedCart =[...this.cartList() , {...product ,quantity}];
+    }
     this.updateCartList(updatedCart)
   }
+
+  removeFromCart(productId:number){
+  const updatedCart =this.cartList().filter((p)=>p.id !==productId);
+  this.updateCartList(updatedCart)
+  }
+
+  getCartList(){
+    return this.cartList();
+  }
+
+  incremintProduct(productId:number){
+    const updatedCart =this.cartList().map((p)=>{
+      if(p.id ===productId && p.quantity <p.stock){
+      return  {...p, quantity: p.quantity +1 }
+      }
+      return p;
+    })
+    this.updateCartList(updatedCart)
+  }
+
+
+  decrementProduct(productId:number){
+    const updatedCart=this.cartList().map((p)=>{
+      if(p.id===productId && p.quantity > 1){
+        return{...p, quantity: p.quantity -1}
+      }
+      return p;
+    })
+    this.updateCartList(updatedCart);
+  }
+  
+  
 }
